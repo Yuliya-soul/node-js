@@ -12,6 +12,10 @@ UsersDB.push(
   new User({ name: 'Nike', login: '345' }),
   new User({ name: 'Mike', login: '678' })
 );
-BoardsDB.push(new Board(), new Board(), new Board());
+BoardsDB.push(
+  new Board({ title: 'start program', order: 1 }),
+  new Board({ title: 'check it', order: 2 }),
+  new Board({ title: 'debag', order: 3 })
+);
 
 module.exports = DB;

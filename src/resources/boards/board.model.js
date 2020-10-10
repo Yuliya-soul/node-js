@@ -3,11 +3,12 @@ class Board {
   constructor({
     id = uuid(),
     title = 'string',
+    order = 0,
     columns = [
       {
         id,
         title,
-        order: 0
+        order
       }
     ]
   } = {}) {
