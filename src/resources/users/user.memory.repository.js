@@ -1,30 +1,30 @@
 const DB = require('../../common/InMemoryDb');
 const User = require('./user.model');
 const getAll = async () => {
-  return DB;
+  return DB.Users;
 };
 const get = async id => {
-  const contact = DB.filter(c => c.id === id)[0];
+  const contact = DB.Users.filter(c => c.id === id)[0];
   return contact;
 };
 const create = async user => {
-  DB.push(user);
+  DB.Users.push(user);
   return get(user.id);
 };
 const remove = async id => {
-  const index = DB.indexOf(c => c.id === id);
-  return DB.splice(index, 1);
+  const index = DB.Users.indexOf(c => c.id === id);
+  return DB.Users.splice(index, 1);
 };
 const update = async (body, id) => {
-  const contact = DB.filter(c => c.id === id)[0];
-  const index = DB.indexOf(contact);
+  const contact = DB.Users.filter(c => c.id === id)[0];
+  const index = DB.Users.indexOf(contact);
   const newUser = new User({
     id: body.id,
     login: body.login,
     password: body.password,
     name: body.name
   });
-  DB.splice(index, 1, newUser);
+  DB.Users.splice(index, 1, newUser);
   newUser.id = id;
   return newUser;
 };
