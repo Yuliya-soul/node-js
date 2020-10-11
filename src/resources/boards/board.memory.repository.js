@@ -13,8 +13,11 @@ const create = async board => {
   return get(board.id);
 };
 const remove = async id => {
-  const index = DB.Boards.indexOf(c => c.id === id);
-  return DB.Boards.splice(index, 1);
+  const contact = DB.Boards.filter(c => c.id === id);
+  const index = DB.Boards.indexOf(contact[0]);
+  if (index !== -1) {
+    return DB.Boards.splice(index, 1);
+  }
 };
 const update = async (body, id) => {
   const board = DB.Boards.filter(c => c.id === id)[0];

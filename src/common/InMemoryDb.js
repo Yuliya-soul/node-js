@@ -18,19 +18,19 @@ const board2 = new Board({ title: 'check it', order: 2 });
 BoardsDB.push(board1, board2, new Board({ title: 'debag', order: 3 }));
 TasksDB.push(
   new Task({
-    idBoard: board1.id,
+    boardId: board1.id,
     title: board1.title,
     order: board1.order,
     userId: user1.id
   }),
   new Task({
-    idBoard: board2.id,
+    boardId: board2.id,
     title: board2.title,
     order: board2.order,
     userId: user2.id
   }),
   new Task({
-    idBoard: board2.id,
+    boardId: board2.id,
     title: board2.title,
     order: board2.order,
     userId: user2.id
