@@ -12,7 +12,7 @@ const create = async user => {
   return get(user.id);
 };
 const remove = async id => {
-  const index = DB.Users.indexOf(c => c.id === id);
+  const index = DB.Users.indexOf(c => c.id === id)[0];
   return DB.Users.splice(index, 1);
 };
 const update = async (body, id) => {

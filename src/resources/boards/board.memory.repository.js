@@ -28,4 +28,5 @@ const update = async (body, id) => {
   newBoard.id = id;
   return newBoard;
 };
+
 module.exports = { getAll, get, create, remove, update };
