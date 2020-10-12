@@ -16,20 +16,9 @@ const create = async board => {
   return getById(board.id);
 };
 const remove = async id => {
-  const index = DB.Boards.findIndex(b => b.id === id);
-  if (index !== -1) {
-    DB.Boards = DB.Boards.filter(b => b.id === id);
-    DB.Tasks = DB.Tasks.filter(t => t.boardId !== id);
-    return {
-      status: 204,
-      result: 'The board has been deleted'
-    };
-  }
-
-  return {
-    status: 404,
-    result: 'Board not found.'
-  };
+  const result = DB.Boards.find(c => c.id === id);
+  DB.Boards = DB.Boards.filter(c => c.id !== id);
+  return result;
 };
 const update = async (body, id) => {
   const board = DB.Boards.filter(c => c.id === id)[0];

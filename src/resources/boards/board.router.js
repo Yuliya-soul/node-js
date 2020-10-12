@@ -38,11 +38,13 @@ router.route('/').post(async (req, res) => {
 
 router.route('/:id').delete(async (req, res) => {
   try {
-    const boards = await boardsRepo.remove(req.params.id);
-    // boards.map(Board.toResponseBoard)
-    res.status(boards.status).json(boards.result);
+    const board = await boardsRepo.getById(req.params.id);
+    if (board) {
+      return res.status(200).json(Board.toResponseBoard(board));
+    }
+    return res.status(404).json('no');
   } catch (e) {
-    res.status(404).send(' not found');
+    res.status(400).send(' not found');
   }
 });
 router.route('/:id').put(async (req, res) => {
