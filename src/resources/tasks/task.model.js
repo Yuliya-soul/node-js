@@ -6,7 +6,8 @@ class Task {
     order = 0,
     description = 'string',
     userId = 'string',
-    boardId = 'string'
+    boardId = 'string',
+    columnId = null
   } = {}) {
     this.id = id;
     this.title = title;
@@ -14,10 +15,11 @@ class Task {
     this.description = description;
     this.userId = userId;
     this.boardId = boardId;
+    this.columnId = columnId;
   }
   static toResponseTask(task) {
-    const { id, title, order, description, userId, boardId } = task;
-    return { id, title, order, description, userId, boardId };
+    const { id, title, order, description, userId, boardId, columnId } = task;
+    return { id, title, order, description, userId, boardId, columnId };
   }
 }
 module.exports = Task;

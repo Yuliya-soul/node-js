@@ -32,9 +32,6 @@ const getAll = async boardId => {
   }
 };
 const remove = async (id, boardId) => {
-  // const contact = DB.Tasks.filter(c => c.boardId === boardId);
-  // const contact1 = contact.filter(c => c.id === id);
-  // const index = DB.Tasks.indexOf(contact1[0]);
   DB.Tasks = DB.Tasks.filter(c => c.boardId !== boardId && c.id !== id);
 
   return DB.Tasks;

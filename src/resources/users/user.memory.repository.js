@@ -11,12 +11,10 @@ const create = async user => {
   DB.Users.push(user);
   return get(user.id);
 };
-const remove = async id => {
-  const contact = DB.Users.filter(c => c.id === id);
-  const index = DB.Users.indexOf(contact[0]);
-  if (index !== -1) {
-    return DB.Users.splice(index, 1);
-  }
+const remove = async (boardId, id) => {
+  DB.Users = DB.Users.filter(c => c.boardId !== boardId && c.id !== id);
+
+  return DB.Users;
 };
 const update = async (body, id) => {
   const contact = DB.Users.filter(c => c.id === id)[0];
