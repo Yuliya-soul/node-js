@@ -3,21 +3,48 @@ const Task = require('./task.model');
 const tasksRepo = require('../tasks/tasks.service');
 
 router.route('/').get(async (req, res) => {
-  console.log(req.params.boardId);
   try {
     const tasks = await tasksRepo.getAll(req.params.boardId);
-    res.json(tasks.map(Task.toResponseTask));
+    res.status(200).json(tasks.map(Task.toResponseTask));
   } catch (e) {
-    res.status(400).send(' not found');
+    res.status(401).send('Access token is missing or invalid');
   }
 });
 
 router.route('/').post(async (req, res) => {
   try {
     const task = await tasksRepo.create(req.params.boardId, req.body);
-    res.json(Task.toResponseTask(task));
+    res.status(200).json(Task.toResponseTask(task));
   } catch (e) {
-    res.status(400).send(' something went wrong');
+    res.status(404).send(' something went wrong');
+  }
+});
+router.route('/:id').get(async (req, res) => {
+  try {
+    const task = await tasksRepo.getById(req.params.id, req.params.boardId);
+    res.status(200).json(Task.toResponseTask(task));
+  } catch (e) {
+    res.status(401).send('Access token is missing or invalid');
+  }
+});
+router.route('/:id').delete(async (req, res) => {
+  try {
+    const tasks = await tasksRepo.remove(req.params.id, req.params.boardId);
+    status(200).json(tasks.map(Task.toResponseTask));
+  } catch (e) {
+    res.status(404).send(' not found');
+  }
+});
+router.route('/:id').put(async (req, res) => {
+  try {
+    const task = await tasksRepo.update(
+      req.body,
+      req.params.id,
+      req.params.boardId
+    );
+    res.status(200).json(Task.toResponse(task));
+  } catch (e) {
+    res.status(400).send(' not found');
   }
 });
 

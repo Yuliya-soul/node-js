@@ -7,7 +7,7 @@ router.route('/').get(async (req, res) => {
     const users = await usersService.getAll();
     res.status(200).json(users.map(User.toResponse));
   } catch (e) {
-    res.status(400).send(' not found');
+    res.status(400).send('Access token is missing or invalid');
   }
 });
 router.route('/:id').get(async (req, res) => {
