@@ -25,10 +25,11 @@ const getAll = async boardId => {
   }
 };
 const remove = async (id, boardId) => {
-  const result = DB.Tasks.filter(c => c.boardId === boardId && c.id === id)[0];
+  const task = DB.Tasks.find(c => c.boardId === boardId && c.id === id);
+  console.log(task);
   DB.Tasks = DB.Tasks.filter(c => c.boardId !== boardId && c.id !== id);
 
-  return result;
+  return task;
 };
 
 const create = async (

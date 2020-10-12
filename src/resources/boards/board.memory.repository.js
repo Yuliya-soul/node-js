@@ -4,28 +4,28 @@ const Board = require('./board.model');
 const getAll = async () => {
   return DB.Boards;
 };
-const get = async id => {
-  const board = DB.Boards.filter(c => c.id === id)[0];
-  return board;
+const getById = async id => {
+  const index = DB.Boards.findIndex(c => c.id === id);
+  if (index !== -1) {
+    return DB.Boards[index];
+  }
+  return null;
 };
 const create = async board => {
   DB.Boards.push(board);
-  return get(board.id);
+  return getById(board.id);
 };
-const remove = async (id, boardId) => {
-  const index = DB.Boards.findIndex(board => board.id === id);
-  const taskIndex = DB.Task.findIndex(task => task.boardId === boardId);
+const remove = async id => {
+  const index = DB.Boards.findIndex(b => b.id === id);
   if (index !== -1) {
-    DB.Boards = [...DB.Boards.slice(0, index), ...DB.Boards.slice(index + 1)];
-    DB.Tasks = [
-      ...DB.Tasks.slice(0, taskIndex),
-      ...DB.Tasks.slice(taskIndex + 1)
-    ];
+    DB.Boards = DB.Boards.filter(b => b.id === id);
+    DB.Tasks = DB.Tasks.filter(t => t.boardId !== id);
     return {
       status: 204,
       result: 'The board has been deleted'
     };
   }
+
   return {
     status: 404,
     result: 'Board not found.'
@@ -44,4 +44,4 @@ const update = async (body, id) => {
   return newBoard;
 };
 
-module.exports = { getAll, get, create, remove, update };
+module.exports = { getAll, getById, create, remove, update };

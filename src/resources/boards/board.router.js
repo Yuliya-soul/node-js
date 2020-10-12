@@ -12,8 +12,11 @@ router.route('/').get(async (req, res) => {
 });
 router.route('/:id').get(async (req, res) => {
   try {
-    const board = await boardsRepo.get(req.params.id);
-    res.status(200).json(Board.toResponseBoard(board));
+    const board = await boardsRepo.getById(req.params.id);
+    if (board) {
+      return res.status(200).json(Board.toResponseBoard(board));
+    }
+    return res.status(404).json('no');
   } catch (e) {
     res.status(400).send(' not found');
   }
@@ -32,9 +35,10 @@ router.route('/').post(async (req, res) => {
     res.status(400).send(' not found');
   }
 });
+
 router.route('/:id').delete(async (req, res) => {
   try {
-    const boards = await boardsRepo.remove(req.params.id, req.params.boardId);
+    const boards = await boardsRepo.remove(req.params.id);
     // boards.map(Board.toResponseBoard)
     res.status(boards.status).json(boards.result);
   } catch (e) {
