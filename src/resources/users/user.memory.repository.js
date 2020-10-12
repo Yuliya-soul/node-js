@@ -11,10 +11,17 @@ const create = async user => {
   DB.Users.push(user);
   return get(user.id);
 };
-const remove = async (boardId, id) => {
-  DB.Users = DB.Users.filter(c => c.boardId !== boardId && c.id !== id);
-
-  return DB.Users;
+const remove = async id => {
+  const result = DB.Users.filter(c => c.id === id)[0];
+  DB.Users = DB.Users.filter(c => c.id !== id);
+  const task = DB.Tasks.filter(c => c.userId === id)[0];
+  const index = DB.Tasks.indexOf(task);
+  console.log(task, ', ', index);
+  if (index !== -1) {
+    DB.Tasks[index].userId = null;
+  }
+  console.log(result);
+  return result;
 };
 const update = async (body, id) => {
   const contact = DB.Users.filter(c => c.id === id)[0];

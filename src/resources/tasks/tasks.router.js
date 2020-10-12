@@ -29,8 +29,8 @@ router.route('/:id').get(async (req, res) => {
 });
 router.route('/:id').delete(async (req, res) => {
   try {
-    const tasks = await tasksRepo.remove(req.params.id, req.params.boardId);
-    status(200).json(tasks.map(Task.toResponseTask));
+    const task = await tasksRepo.remove(req.params.id, req.params.boardId);
+    res.status(200).json(Task.toResponseTask(task));
   } catch (e) {
     res.status(404).send(' not found');
   }
@@ -42,7 +42,7 @@ router.route('/:id').put(async (req, res) => {
       req.params.id,
       req.params.boardId
     );
-    res.status(200).json(Task.toResponse(task));
+    res.status(200).json(Task.toResponseTask(task));
   } catch (e) {
     res.status(400).send(' not found');
   }

@@ -9,32 +9,26 @@ const get = async id => {
   return task;
 };
 
-const getById = async (boardId, id) => {
-  const getTask = DB.Tasks.find(
-    task => task.id === id && task.boardId === boardId
-  )[0];
-  if (typeof getTask === 'undefined') {
-    return {
-      status: 404,
-      result: 'Task not found'
-    };
+const getById = async (id, boardId) => {
+  const contact = DB.Tasks.filter(c => c.boardId === boardId && c.id === id)[0];
+  const index = DB.Tasks.indexOf(contact);
+  if (index !== -1) {
+    return contact;
   }
-  return {
-    status: 200,
-    result: Task.toResponse(getTask)
-  };
 };
 
 const getAll = async boardId => {
   const tasks = DB.Tasks.filter(c => c.boardId === boardId);
+
   if (tasks.length !== 0) {
     return tasks;
   }
 };
 const remove = async (id, boardId) => {
+  const result = DB.Tasks.filter(c => c.boardId === boardId && c.id === id)[0];
   DB.Tasks = DB.Tasks.filter(c => c.boardId !== boardId && c.id !== id);
 
-  return DB.Tasks;
+  return result;
 };
 
 const create = async (
@@ -53,20 +47,15 @@ const create = async (
 
   return task;
 };
-const update = async ({ body, id, boardId }) => {
-  const contact = DB.Tasks.filter(c => c.boardId === boardId)[0];
-  const contact1 = contact.filter(c => c.id === id)[0];
-  const index = DB.Tasks.indexOf(contact1);
-  const newTask = new Task({
-    id: body.id,
-    title: body.title,
-    description: body.description,
-    userId: body.userId,
-    boardId: body.boardId
-  });
-  DB.Tasks.splice(index, 1, newTask);
-  newTask.id = id;
-  return newTask;
+const update = async (body, id, boardId) => {
+  const contact = DB.Tasks.filter(c => c.boardId === boardId && c.id === id)[0];
+  if (contact) {
+    contact.title = body.title;
+    contact.description = body.description;
+    contact.userId = body.userId;
+    contact.boardId = body.boardId;
+    return contact;
+  }
 };
 
 module.exports = {

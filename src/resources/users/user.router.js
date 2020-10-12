@@ -35,8 +35,8 @@ router.route('/').post(async (req, res) => {
 });
 router.route('/:id').delete(async (req, res) => {
   try {
-    const users = await usersService.remove(req.params.boardId, req.params.id);
-    res.status(200).json(users.map(User.toResponse));
+    const user = await usersService.remove(req.params.id);
+    res.status(200).json(User.toResponse(user));
   } catch (e) {
     res.status(404).send(' not found');
   }
