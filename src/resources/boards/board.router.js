@@ -34,7 +34,7 @@ router.route('/').post(async (req, res) => {
 });
 router.route('/:id').delete(async (req, res) => {
   try {
-    const boards = await boardsRepo.remove(req.params.id);
+    const boards = await boardsRepo.remove(req.params.id, req.params.boardId);
     // boards.map(Board.toResponseBoard)
     res.status(boards.status).json(boards.result);
   } catch (e) {

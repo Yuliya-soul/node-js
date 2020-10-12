@@ -12,10 +12,15 @@ const create = async board => {
   DB.Boards.push(board);
   return get(board.id);
 };
-const remove = async id => {
+const remove = async (id, boardId) => {
   const index = DB.Boards.findIndex(board => board.id === id);
+  const taskIndex = DB.Task.findIndex(task => task.boardId === boardId);
   if (index !== -1) {
     DB.Boards = [...DB.Boards.slice(0, index), ...DB.Boards.slice(index + 1)];
+    DB.Tasks = [
+      ...DB.Tasks.slice(0, taskIndex),
+      ...DB.Tasks.slice(taskIndex + 1)
+    ];
     return {
       status: 204,
       result: 'The board has been deleted'
