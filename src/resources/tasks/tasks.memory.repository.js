@@ -12,7 +12,7 @@ const get = async id => {
 const getById = async (boardId, id) => {
   const getTask = DB.Tasks.find(
     task => task.id === id && task.boardId === boardId
-  );
+  )[0];
   if (typeof getTask === 'undefined') {
     return {
       status: 404,
