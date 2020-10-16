@@ -15,10 +15,21 @@ const create = async board => {
   DB.Boards.push(board);
   return getById(board.id);
 };
+
+const removeAllBoardTasks = async boardId => {
+  DB.Tasks = DB.Tasks.filter(task => task.boardId !== boardId);
+};
 const remove = async id => {
   const result = DB.Boards.find(c => c.id === id);
-  DB.Boards = DB.Boards.filter(c => c.id !== id);
-  return result;
+  const result1 = DB.Tasks.find(c => c.boardId === id);
+  if (result) {
+    if (result1) {
+      removeAllBoardTasks(id);
+    }
+    DB.Boards = DB.Boards.filter(c => c.id !== id);
+    return result;
+  }
+  return result === null;
 };
 const update = async (body, id) => {
   const board = DB.Boards.filter(c => c.id === id)[0];

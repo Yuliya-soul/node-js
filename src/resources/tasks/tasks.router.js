@@ -1,5 +1,5 @@
 const router = require('express').Router({ mergeParams: true });
-const Task = require('./task.model');
+const Task = require('./tasks.model');
 const tasksRepo = require('../tasks/tasks.service');
 
 router.route('/').get(async (req, res) => {
@@ -24,15 +24,17 @@ router.route('/:id').get(async (req, res) => {
     const task = await tasksRepo.getById(req.params.id, req.params.boardId);
     res.status(200).json(Task.toResponseTask(task));
   } catch (e) {
-    res.status(401).send('Access token is missing or invalid');
+    res.status(404).send('Access token is missing or invalid');
   }
 });
 router.route('/:id').delete(async (req, res) => {
   try {
-    const task = await tasksRepo.remove(req.params.id, req.params.boardId);
-    res.status(200).json(Task.toResponseTask(task));
+    if (await tasksRepo.getById(req.params.id, req.params.boardId)) {
+      const task1 = await tasksRepo.remove(req.params.id, req.params.boardId);
+      res.json(Task.toResponseTask(task1));
+    }
   } catch (e) {
-    res.status(404).send(' not found');
+    res.status(404).send('Access token is missing or invalid');
   }
 });
 router.route('/:id').put(async (req, res) => {

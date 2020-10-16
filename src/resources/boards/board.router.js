@@ -38,15 +38,13 @@ router.route('/').post(async (req, res) => {
 
 router.route('/:id').delete(async (req, res) => {
   try {
-    const board = await boardsRepo.getById(req.params.id);
-    if (board) {
-      return res.status(200).json(Board.toResponseBoard(board));
-    }
-    return res.status(404).json('no');
-  } catch (e) {
+    const removedBoard = await boardsRepo.remove(req.params.id);
+    return res.json(Board.toResponseBoard(removedBoard));
+  } catch (err) {
     res.status(400).send(' not found');
   }
 });
+
 router.route('/:id').put(async (req, res) => {
   try {
     const board = await boardsRepo.update(req.body, req.params.id);

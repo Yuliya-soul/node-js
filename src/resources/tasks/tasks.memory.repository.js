@@ -1,12 +1,20 @@
+/* eslint-disable prettier/prettier */
 const DB = require('../../common/InMemoryDb');
-const Task = require('./task.model');
+const Task = require('./tasks.model');
 
 const getAllTasks = async () => {
   return DB.Tasks;
 };
+const getAll = async boardId => {
+  const tasks = DB.Tasks.filter(c => c.boardId === boardId);
+  if (tasks.length !== 0) {
+    return tasks;
+  }
+};
+
 const get = async id => {
-  const task = DB.Tasks.filter(c => c.id === id)[0];
-  return task;
+    const task = DB.Tasks.filter(c => c.id === id)[0];
+    return task;
 };
 
 const getById = async (id, boardId) => {
@@ -17,19 +25,21 @@ const getById = async (id, boardId) => {
   }
 };
 
-const getAll = async boardId => {
-  const tasks = DB.Tasks.filter(c => c.boardId === boardId);
-
-  if (tasks.length !== 0) {
-    return tasks;
-  }
-};
 const remove = async (id, boardId) => {
-  const task = DB.Tasks.find(c => c.boardId === boardId && c.id === id);
-  console.log(task);
-  DB.Tasks = DB.Tasks.filter(c => c.boardId !== boardId && c.id !== id);
-
-  return task;
+  const index = DB.Tasks.findIndex(
+    task => task.id === id && task.boardId === boardId
+  );
+  if (index !== -1) {
+    DB.Tasks = [...DB.Tasks.slice(0, index), ...DB.Tasks.slice(index + 1)];
+    return {
+      status: 200,
+      result: 'The task has been deleted'
+    };
+  }
+  return {
+    status: 404,
+    result: 'Task not found.'
+  };
 };
 
 const create = async (
