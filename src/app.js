@@ -6,6 +6,16 @@ const userRouter = require('./resources/users/user.router');
 const boardRouter = require('./resources/boards/board.router');
 const taskRouter = require('./resources/tasks/tasks.router');
 const { winston, morgan } = require('./logging/logging');
+const error = require('./middleware/error');
+
+process.on('uncaughtException', err => {
+  winston.error(err.message, err);
+});
+process.on('unhandledRejection', rej => {
+  throw rej;
+});
+
+Promise.reject(Error('Oops!'));
 
 const app = express();
 const swaggerDocument = YAML.load(path.join(__dirname, '../doc/api.yaml'));
@@ -29,4 +39,5 @@ app.use('/users', userRouter);
 app.use('/boards', boardRouter);
 boardRouter.use('/:boardId/tasks', taskRouter);
 
+app.use(error);
 module.exports = app;
