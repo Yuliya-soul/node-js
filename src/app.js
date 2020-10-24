@@ -9,13 +9,14 @@ const { winston, morgan } = require('./logging/logging');
 const error = require('./middleware/error');
 
 process.on('uncaughtException', err => {
-  winston.error(err.message, err);
+  winston.error(err.message, { err });
 });
-process.on('unhandledRejection', rej => {
-  throw rej;
+process.on('unhandledRejection', err => {
+  winston.error(err.message, { err });
+  throw err;
 });
 
-Promise.reject(Error('Oops!'));
+/* Promise.reject(Error('Oops!')); */
 
 const app = express();
 const swaggerDocument = YAML.load(path.join(__dirname, '../doc/api.yaml'));
@@ -30,8 +31,8 @@ app.use('/', (req, res, next) => {
     res.send('Service is running!');
     return;
   }
-  const { method, url, params, body } = req;
-  winston.info({ method, url, params, body });
+  const { method, url, params, query, body } = req;
+  winston.info({ method, url, params, query, body });
   next();
 });
 
