@@ -1,5 +1,5 @@
 const boardsRepo = require('./board.db.memory.repository');
-const tasksRepo = require('./board.memory.repository');
+const tasksRepo = require('../tasks/tasks.db.memory.repository');
 
 const getAll = () => boardsRepo.getAll();
 const getById = id => boardsRepo.getById(id);

@@ -1,6 +1,6 @@
 const router = require('express').Router({ mergeParams: true });
-const Task = require('./tasks.model');
-const tasksRepo = require('../tasks/tasks.service');
+const Task = require('./task.db.model');
+const tasksRepo = require('../tasks/tasks.db.memory.repository');
 
 router.route('/').get(async (req, res) => {
   try {

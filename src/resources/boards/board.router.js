@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const Board = require('./board.model');
+const Board = require('./board.db.model');
 const boardsRepo = require('../boards/board.service');
 
 router.route('/').get(async (req, res) => {
