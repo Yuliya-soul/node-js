@@ -1,3 +1,4 @@
+const Task = require('../tasks/task.db.model');
 const User = require('./user.db.model');
 
 const getAll = async () => {
@@ -9,18 +10,13 @@ const get = async id => {
 const create = async user => {
   return await User.create(user);
 };
-/* const unassignedUserTasks = async userId => {
-  throw new Error();
-  /*   DB.Tasks = DB.Tasks.map(task => {
-    if (task.userId === userId) {
-      task.userId = null;
-    }
-    return task;
-  }); */
 
 const remove = async id => {
-  const delUser = User.findOneAndDelete({ _id: id });
-  return await delUser;
+  const delUser = await User.findOneAndDelete({ _id: id });
+  const query = { userId: id };
+  const delUserTask = await Task.updateMany(query, { userId: null });
+
+  return { delUser, delUserTask };
 };
 const update = async (body, id) => {
   const updateUser = User.findByIdAndUpdate(

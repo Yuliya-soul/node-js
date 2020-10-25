@@ -1,3 +1,4 @@
+const Task = require('../tasks/task.db.model');
 const Board = require('./board.db.model');
 
 const getAll = async () => {
@@ -10,12 +11,10 @@ const create = async board => {
   return await Board.create(board);
 };
 
-/* const removeAllBoardTasks = async boardId => {
-  throw new Error();
-  /* DB.Tasks = DB.Tasks.filter(task => task.boardId !== boardId); */
 const remove = async id => {
-  const delBoard = Board.findOneAndDelete({ _id: id });
-  return await delBoard;
+  const delBoard = await Board.findOneAndDelete({ _id: id });
+  const delTasks = await Task.deleteMany({ boardId: id });
+  return { delBoard, delTasks };
 };
 const update = async (body, id) => {
   const updateBoard = Board.findByIdAndUpdate(
