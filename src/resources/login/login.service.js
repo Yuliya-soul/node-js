@@ -1,5 +1,7 @@
-const usersRepo = require('../users/user.db.memory.repository');
+const JWT_SECRET_KEY = require('../../common/config');
+const { sign } = require('jsonwebtoken');
 
-const create = user => usersRepo.create(user);
-
-module.exports = { create };
+const createAccessToken = Login => {
+  return sign({ Login }, `${JWT_SECRET_KEY}`, { expiresIn: '15m' });
+};
+module.exports = createAccessToken;

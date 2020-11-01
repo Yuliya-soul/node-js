@@ -1,8 +1,8 @@
 const Task = require('../tasks/task.db.model');
 const User = require('./user.db.model');
-const { sign } = require('jsonwebtoken');
-const JWT_SECRET_KEY = require('../../common/config');
+
 const { compare } = require('bcrypt');
+const createAccessToken = require('../login/login.service');
 
 const getAll = async () => {
   return await User.find({});
@@ -28,9 +28,6 @@ const update = async (body, id) => {
     { new: true }
   );
   return await updateUser;
-};
-const createAccessToken = Login => {
-  return sign({ Login }, `${JWT_SECRET_KEY}`, { expiresIn: '15m' });
 };
 
 const postLogin = async (login, password) => {
