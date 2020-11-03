@@ -2,9 +2,13 @@ const express = require('express');
 const swaggerUI = require('swagger-ui-express');
 const path = require('path');
 const YAML = require('yamljs');
+const cors = require('cors');
+const auth = require('./middleware/auth');
+
 const userRouter = require('./resources/users/user.router');
 const boardRouter = require('./resources/boards/board.router');
 const taskRouter = require('./resources/tasks/tasks.router');
+const loginRouter = require('./resources/login/login.router');
 const { winston, morgan } = require('./logging/logging');
 const error = require('./middleware/error');
 
@@ -19,6 +23,7 @@ process.on('unhandledRejection', err => {
 /* Promise.reject(Error('Oops!')); */
 
 const app = express();
+app.use(cors());
 const swaggerDocument = YAML.load(path.join(__dirname, '../doc/api.yaml'));
 
 app.use(express.json());
@@ -35,9 +40,9 @@ app.use('/', (req, res, next) => {
   winston.info({ method, url, params, query, body });
   next();
 });
-
-app.use('/users', userRouter);
-app.use('/boards', boardRouter);
+app.use('/login', loginRouter);
+app.use('/users', auth, userRouter);
+app.use('/boards', auth, boardRouter);
 boardRouter.use('/:boardId/tasks', taskRouter);
 
 app.use(error);

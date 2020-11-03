@@ -31,7 +31,8 @@ const update = async (body, id, boardId) => {
     title: body.title,
     order: body.order,
     description: body.description,
-    userId: body.userId
+    userId: body.userId,
+    new: true
   };
   const updateTask = Task.findOneAndUpdate(conditions, update1);
   return await updateTask;
