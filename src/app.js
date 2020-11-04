@@ -4,6 +4,7 @@ const path = require('path');
 const YAML = require('yamljs');
 const cors = require('cors');
 const auth = require('./middleware/auth');
+const helmet = require('helmet');
 
 const userRouter = require('./resources/users/user.router');
 const boardRouter = require('./resources/boards/board.router');
@@ -23,6 +24,7 @@ process.on('unhandledRejection', err => {
 /* Promise.reject(Error('Oops!')); */
 
 const app = express();
+app.use(helmet());
 app.use(cors());
 const swaggerDocument = YAML.load(path.join(__dirname, '../doc/api.yaml'));
 

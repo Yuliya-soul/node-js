@@ -1,4 +1,4 @@
-const jwt = require('jsonwebtoken');
+const { verify } = require('jsonwebtoken');
 const JWT_SECRET_KEY = require('../common/config');
 
 module.exports = (req, res, next) => {
@@ -10,7 +10,7 @@ module.exports = (req, res, next) => {
       res.status(401).send('Access denied.Unauthorized user');
     } else {
       try {
-        res = jwt.verify(token, `${JWT_SECRET_KEY}`);
+        res = verify(token, `${JWT_SECRET_KEY}`);
       } catch (e) {
         return next();
       }
