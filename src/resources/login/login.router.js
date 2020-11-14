@@ -7,6 +7,6 @@ router.route('/').post(async (req, res) => {
     req.body.password
   );
 
-  return res.json(checkedUserToken.result);
+  return res.status(checkedUserToken.status).json(checkedUserToken.result);
 });
 module.exports = router;

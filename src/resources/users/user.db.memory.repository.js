@@ -47,7 +47,7 @@ const postLogin = async (login, password) => {
   });
 
   if (check1) {
-    const accessToken = createAccessToken(login);
+    const accessToken = createAccessToken({ login, password });
     return {
       status: 200,
       result: { accessToken }
